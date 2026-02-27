@@ -59,3 +59,37 @@ pnpm dev
 ```
 
 Your app template should now be running on [localhost:3000](http://localhost:3000/).
+
+
+## Build Windows Installer (.exe)
+
+This repo now includes a Tauri desktop packaging scaffold so you can build a Windows installer for local use.
+
+### Prerequisites (Windows)
+
+1. Install Node.js 20+
+2. Install Rust (stable) from https://rustup.rs
+3. Install Microsoft Visual Studio C++ Build Tools (Desktop development with C++)
+4. Install dependencies:
+
+```bash
+pnpm install
+```
+
+### Run desktop app in dev mode
+
+```bash
+pnpm desktop:dev
+```
+
+### Build installer (.exe)
+
+```bash
+pnpm desktop:build
+```
+
+After build finishes, installers are generated under:
+
+- `src-tauri/target/release/bundle/nsis/`
+- `src-tauri/target/release/bundle/msi/`
+
