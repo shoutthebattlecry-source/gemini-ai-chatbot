@@ -1,4 +1,8 @@
+"use client";
+
 import { motion } from "framer-motion";
+
+import { ProviderSettingsSheet } from "@/components/custom/provider-settings-sheet";
 
 const tagBuckets = [
   {
@@ -49,8 +53,9 @@ export const Overview = () => {
             雅思数字诊疗室：从刷题走向数据驱动闭环
           </h1>
           <p className="text-sm text-zinc-600 dark:text-zinc-300">
-            你的历史行为数据正在实时驱动“诊断 → 训练 → 反馈 → 再诊断”的备考路径。
+            你只需要先把 API 填进去，系统就能开始给你做“诊断 + 推题 + 每日计划”。
           </p>
+          <ProviderSettingsSheet />
         </div>
 
         <div className="grid gap-4 md:grid-cols-2">
