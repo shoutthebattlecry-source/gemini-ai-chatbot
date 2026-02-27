@@ -59,3 +59,106 @@ pnpm dev
 ```
 
 Your app template should now be running on [localhost:3000](http://localhost:3000/).
+
+
+## Build Windows Installer (.exe)
+
+This repo now includes a Tauri desktop packaging scaffold so you can build a Windows installer for local use.
+
+### Prerequisites (Windows)
+
+1. Install Node.js 20+
+2. Install Rust (stable) from https://rustup.rs
+3. Install Microsoft Visual Studio C++ Build Tools (Desktop development with C++)
+4. Install dependencies:
+
+```bash
+pnpm install
+```
+
+### Run desktop app in dev mode
+
+```bash
+pnpm desktop:dev
+```
+
+### Build installer (.exe)
+
+```bash
+pnpm desktop:build
+```
+
+After build finishes, installers are generated under:
+
+- `src-tauri/target/release/bundle/nsis/`
+- `src-tauri/target/release/bundle/msi/`
+
+
+
+
+## 中文小白指南（本地运行 + 打包 exe）
+
+你是 Windows 用户的话，直接按下面做，不需要懂代码。
+
+### 1）先打开项目目录
+
+在 PowerShell 输入（把路径改成你自己的）：
+
+```bash
+cd "D:\003-dowanload\gemini-chatbot-main\gemini-chatbot-main"
+```
+
+### 2）安装依赖
+
+```bash
+pnpm install
+```
+
+### 3）创建环境变量文件 `.env.local`
+
+在项目根目录新建 `.env.local`，填入下面四项（把 `xxxx` 改成你的真实值）：
+
+```env
+GOOGLE_GENERATIVE_AI_API_KEY=xxxx
+AUTH_SECRET=xxxx
+BLOB_READ_WRITE_TOKEN=xxxx
+POSTGRES_URL=xxxx
+```
+
+### 4）初始化数据库
+
+```bash
+pnpm tsx db/migrate.ts
+```
+
+### 5）启动网页版
+
+```bash
+pnpm dev
+```
+
+浏览器打开：`http://localhost:3000`
+
+---
+
+### 6）如果你要打包成安装包（exe）
+
+先安装：
+- Rust（https://rustup.rs）
+- Visual Studio C++ Build Tools（勾选 Desktop development with C++）
+
+然后在项目根目录执行：
+
+```bash
+pnpm desktop:build
+```
+
+打包完成后，安装包在：
+- `src-tauri/target/release/bundle/nsis/`（通常是 `.exe`）
+- `src-tauri/target/release/bundle/msi/`
+
+### 7）常见问题（中文）
+
+- 打开网页跳到登录页：正常，先注册再登录。
+- 命令找不到 `pnpm`：先执行 `npm i -g pnpm`。
+- 数据库报错：检查 `.env.local` 里的 `POSTGRES_URL` 是否正确。
