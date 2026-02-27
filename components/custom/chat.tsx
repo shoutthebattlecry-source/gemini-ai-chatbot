@@ -2,10 +2,15 @@
 
 import { Attachment, Message } from "ai";
 import { useChat } from "ai/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Message as PreviewMessage } from "@/components/custom/message";
 import { useScrollToBottom } from "@/components/custom/use-scroll-to-bottom";
+import {
+  defaultPersistedState,
+  PersistedProviderState,
+  STORAGE_KEY,
+} from "@/lib/provider-settings";
 
 import { MultimodalInput } from "./multimodal-input";
 import { Overview } from "./overview";
@@ -17,10 +22,36 @@ export function Chat({
   id: string;
   initialMessages: Array<Message>;
 }) {
+  const [providerState, setProviderState] = useState<PersistedProviderState>(
+    defaultPersistedState
+  );
+
+  useEffect(() => {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+
+    try {
+      const parsed = JSON.parse(raw) as PersistedProviderState;
+      setProviderState({
+        selectedProvider:
+          parsed.selectedProvider ?? defaultPersistedState.selectedProvider,
+        settings: {
+          ...defaultPersistedState.settings,
+          ...parsed.settings,
+        },
+      });
+    } catch {
+      window.localStorage.removeItem(STORAGE_KEY);
+    }
+  }, []);
+
   const { messages, handleSubmit, input, setInput, append, isLoading, stop } =
     useChat({
       id,
-      body: { id },
+      body: {
+        id,
+        providerState,
+      },
       initialMessages,
       maxSteps: 10,
       onFinish: () => {
